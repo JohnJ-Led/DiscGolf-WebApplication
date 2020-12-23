@@ -1,0 +1,104 @@
+{
+  "game": {
+    "gameID": "game1",
+    "location": "location1",
+    "hole": [
+      {
+        "holeNbr": "1",
+        "distance": "123",
+        "par": "3"
+      },
+      {
+        "holeNbr": "2",
+        "distance": "123",
+        "par": "3"
+      },
+      {
+        "holeNbr": "3",
+        "distance": "123",
+        "par": "3"
+      },
+      {
+        "holeNbr": "4",
+        "distance": "123",
+        "par": "3"
+      },
+      {
+        "holeNbr": "5",
+        "distance": "123",
+        "par": "3"
+      },
+      {
+        "holeNbr": "6",
+        "distance": "123",
+        "par": "3"
+      },
+      {
+        "holeNbr": "7",
+        "distance": "123",
+        "par": "3"
+      },
+      {
+        "holeNbr": "8",
+        "distance": "123",
+        "par": "3"
+      },
+      {
+        "holeNbr": "9",
+        "distance": "123",
+        "par": "3"
+      },
+      {
+        "holeNbr": "10",
+        "distance": "123",
+        "par": "3"
+      },
+      {
+        "holeNbr": "11",
+        "distance": "123",
+        "par": "3"
+      },
+      {
+        "holeNbr": "12",
+        "distance": "123",
+        "par": "3"
+      },
+      {
+        "holeNbr": "13",
+        "distance": "123",
+        "par": "3"
+      },
+      {
+        "holeNbr": "14",
+        "distance": "123",
+        "par": "3"
+      },
+      {
+        "holeNbr": "15",
+        "distance": "123",
+        "par": "3"
+      },
+      {
+        "holeNbr": "16",
+        "distance": "123",
+        "par": "3"
+      },
+      {
+        "holeNbr": "17",
+        "distance": "123",
+        "par": "3"
+      },
+      {
+        "holeNbr": "18",
+        "distance": "123",
+        "par": "3"
+      },
+    ],
+    "player": [
+      {
+        "pname": "Yeeter",
+        "score": [1,2,3,4,5,6,7,8,9,10,11,12,13,141,5,16,17,18]
+      }
+    ]
+  }
+}
