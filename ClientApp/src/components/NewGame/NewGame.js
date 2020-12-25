@@ -84,7 +84,6 @@ export class NewGame extends Component {
 
         let hole = this.state.game.hole;
         return (
-            <table className="table table-bordered" aria-labelledby="tabelLabel">
                 <thead>
                     <tr>
                         <th>Hole:</th>
@@ -110,8 +109,7 @@ export class NewGame extends Component {
                         )}
                     </tr>
                 
-            </thead>
-            </table>
+            </thead>            
         );
     }
 
@@ -132,21 +130,18 @@ export class NewGame extends Component {
     populatePlayer() {
         let player = this.state.game.player;
         return (
-            <table className='table table-bordered' aria-labelledby="tabelLabel">
-                <tbody>
-                    <tr>
-                        <th colSpan="20" scope="colgroup"> Player: </th>
-                        <th ><button className="btn btn-primary" onClick={this.addNewPlayer}>Add</button></th>
-                    </tr>
-                </tbody>
-                <tbody>
+            <tbody>
+                <tr>
+                    <th colSpan="18" scope="colgroup"> Player: </th>
+                    <th ><button className="btn btn-primary" onClick={this.addNewPlayer}>Add</button></th>
+
+                </tr>
                     {player.map((player) => 
                             <tr key={player.pid}>
                                 <th><input type="text" name="pname" className="new-game-edit" onChange={(e) => this.handleOnChangeHole(player.pid, e)} /></th>
                             </tr>
                     )}
-                </tbody>
-            </table>
+            </tbody>
             );
     }
 
@@ -172,8 +167,10 @@ export class NewGame extends Component {
                     </label>
                     
                 </form>
-                {this.populateGameHead()}
-                {this.populatePlayer()}
+                <table className='table table-bordered' aria-labelledby="tabelLabel">
+                    {this.populateGameHead()}
+                    {this.populatePlayer()}
+                </table>
                 <button className="btn btn-primary" onClick={this.onSaveGame}>Save Game</button>
             </div>
         );
