@@ -19,7 +19,10 @@ export class NewGame extends Component {
                 player: [{
                     pid: '',
                     pname: '',
-                    score: []
+                    scores: [{
+                        sid: '',
+                        score: ''
+                    }]
                 }]
             },
             newGame: false
@@ -33,21 +36,37 @@ export class NewGame extends Component {
     }
 
     isNewGame() {
-        //Inititatly state setup
+        //Initital state setup
         this.setState({ newGame: true });
         let { game } = this.state;
         let tempArry = [];
-        let scores = [];
+        let score = [];
         for (let i = 1; i <= 18; i++) {
             let holeObj = { holeNbr: i, distance: '', par: '' };
+            let scoreObj = { sid: i, score: '' };
             tempArry.push(holeObj);
-            scores.push('');
+            score.push(scoreObj);
         }
         game["hole"] = tempArry;
-        game["player"] = [{ pid: 1, pname: '', score: scores }];
+        game["player"] = [{ pid: 1, pname: '', scores: score }];
         this.setState({ game });
         console.log(tempArry);
 
+    }
+
+    addNewPlayer() {
+        let { game } = this.state;
+        let score = [];
+        for (let i = 1; i <= 18; i++) {
+            let scoreObj = { sid: i, score: '' };
+            score.push(scoreObj);
+        }
+
+        let addPlayer = [...game.player];
+        addPlayer.push({ pid: addPlayer.length + 1, pname: '', scores: score });
+        game["player"] = addPlayer;
+
+        this.setState({ game });
     }
 
     onSaveGame() {
@@ -67,19 +86,31 @@ export class NewGame extends Component {
     handleOnChangeHole = (id, e) => {
         //Use to update Array state objects
         let { game } = this.state;
+        let subObj;
         if(e.target.name === 'distance' || e.target.name === 'par') {
-            let updateHole = [...game.hole];
-            updateHole[id - 1][e.target.name] = e.target.value;
-            game["hole"] = updateHole;
+            subObj = "hole";
         }
-        else if (e.target.name === 'pname' || e.target.name === 'score') {
-            let updatePlayer = [...game.player];
-            updatePlayer[id - 1][e.target.name] = e.target.value;
-                game["player"] = updatePlayer;
-
+        else if (e.target.name === 'pname') {
+            subObj = "player";
         }
+        let update = [...game[subObj]];
+        update[id - 1][e.target.name] = e.target.value;
+        game[subObj] = update;
         this.setState({ game });
     }
+
+    handleOnChangeScore = (players, id, e) => {
+        let { game } = this.state;
+        let updatePlayer = game.player;
+        let key = players.pid - 1;
+        let updateScore = updatePlayer[key]["scores"];
+        updateScore[id][e.target.name] = e.target.value;
+        updatePlayer[key]["scores"] = updateScore;
+        game["player"] = updatePlayer;
+
+        this.setState({ game });
+    }
+
     populateGameHead() {
 
         let hole = this.state.game.hole;
@@ -113,20 +144,6 @@ export class NewGame extends Component {
         );
     }
 
-    addNewPlayer() {
-        let { game } = this.state;
-        let scores = [];
-        for (let i = 0; i < 18; i++) {
-            scores.push('');
-        }
-
-        let addPlayer = [...game.player];
-        addPlayer.push({ pid: addPlayer.length+1, pname: '', score: scores });
-        game["player"] = addPlayer;
-        
-        this.setState({ game });
-    }
-
     populatePlayer() {
         let player = this.state.game.player;
         return (
@@ -136,9 +153,10 @@ export class NewGame extends Component {
                     <th ><button className="btn btn-primary" onClick={this.addNewPlayer}>Add</button></th>
 
                 </tr>
-                    {player.map((player) => 
-                            <tr key={player.pid}>
-                                <th><input type="text" name="pname" className="new-game-edit" onChange={(e) => this.handleOnChangeHole(player.pid, e)} /></th>
+                    {player.map((player, index) => 
+                            <tr key={index}>
+                            <th><input type="text" name="pname" className="new-game-edit" onChange={(e) => this.handleOnChangeHole(player.pid, e)} /></th>
+                            {player.scores.map((score, index) => <td key={index} ><input type="text" name="score" className="new-game-edit" onChange={(e) => this.handleOnChangeScore(player, index, e)}/> </td>)}
                             </tr>
                     )}
             </tbody>
@@ -154,7 +172,6 @@ export class NewGame extends Component {
                         <input
                             name="gameID"
                             type="text"
-                            
                             onChange={this.handleOnChangeGame} />
                     </label>
                     <label>
@@ -162,7 +179,6 @@ export class NewGame extends Component {
                         <input
                             name="location"
                             type="text"
-                            value={this.state.game.location}
                             onChange={this.handleOnChangeGame} />
                     </label>
                     
