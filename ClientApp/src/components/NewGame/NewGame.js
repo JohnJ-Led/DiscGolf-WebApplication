@@ -1,4 +1,5 @@
 ﻿import React, { Component } from 'react';
+import { GameTable } from '../Table/GameTable';
 
 export class NewGame extends Component {
 
@@ -28,11 +29,14 @@ export class NewGame extends Component {
             newGame: false
         };
         this.isNewGame = this.isNewGame.bind(this);
-        this.handleOnChangeGame = this.handleOnChangeGame.bind(this);
         this.onSaveGame = this.onSaveGame.bind(this);
-        this.populateGameHead = this.populateGameHead.bind(this);
-        this.populatePlayer = this.populatePlayer.bind(this);
-        this.addNewPlayer = this.addNewPlayer.bind(this);
+    }
+
+    onSaveGame() {
+        console.log('The State');
+        console.log(this.state.game);
+        console.log('The Props');
+        console.log(this.props.game);
     }
 
     isNewGame() {
@@ -53,154 +57,22 @@ export class NewGame extends Component {
         console.log(tempArry);
 
     }
-
-    addNewPlayer() {
-        let { game } = this.state;
-        let score = [];
-        for (let i = 1; i <= 18; i++) {
-            let scoreObj = { sid: i, score: '' };
-            score.push(scoreObj);
-        }
-
-        let addPlayer = [...game.player];
-        addPlayer.push({ pid: addPlayer.length + 1, pname: '', scores: score });
-        game["player"] = addPlayer;
-
-        this.setState({ game });
-    }
-
-    onSaveGame() {
+    componentDidUpdate(prevProps, prevState) {
+        console.log('*****');
         console.log(this.state.game);
-        
-    }
-
-    handleOnChangeGame(e) {
-        //Use to update None Array state objects
-        let { game } = this.state;
-        game[e.target.name] = e.target.value;
-        this.setState({
-            game
-        });
-    }
-
-    handleOnChangeHole = (id, e) => {
-        //Use to update Array state objects
-        let { game } = this.state;
-        let subObj;
-        if(e.target.name === 'distance' || e.target.name === 'par') {
-            subObj = "hole";
-        }
-        else if (e.target.name === 'pname') {
-            subObj = "player";
-        }
-        let update = [...game[subObj]];
-        update[id - 1][e.target.name] = e.target.value;
-        game[subObj] = update;
-        this.setState({ game });
-    }
-
-    handleOnChangeScore = (players, id, e) => {
-        let { game } = this.state;
-        let updatePlayer = game.player;
-        let key = players.pid - 1;
-        let updateScore = updatePlayer[key]["scores"];
-        updateScore[id][e.target.name] = e.target.value;
-        updatePlayer[key]["scores"] = updateScore;
-        game["player"] = updatePlayer;
-
-        this.setState({ game });
-    }
-
-    populateGameHead() {
-
-        let hole = this.state.game.hole;
-        return (
-                <thead>
-                    <tr>
-                        <th>Hole:</th>
-                    {hole.map((hole) =>
-                        <th scope="col" key={hole.holeNbr} >
-                            {hole.holeNbr}
-                        </th >
-                    )}
-                </tr>
-                
-                    <tr>
-                        <th> Distance </th>
-                    {hole.map((hole) =>
-                        <td key={hole.holeNbr}><input type="text" name="distance" className="new-game-edit" onChange={(e) => this.handleOnChangeHole(hole.holeNbr, e)}/>
-                            </td>
-                        )}
-                    </tr>
-                        <tr>
-                            <th> Par </th>
-                    {hole.map((hole) =>
-                        <td  key={hole.holeNbr}><input type="text" name="par" className="new-game-edit" onChange={(e) => this.handleOnChangeHole(hole.holeNbr, e)}/>
-                            </td>
-                        )}
-                    </tr>
-                
-            </thead>            
-        );
-    }
-
-    populatePlayer() {
-        let player = this.state.game.player;
-        return (
-            <tbody>
-                <tr>
-                    <th colSpan="18" scope="colgroup"> Player: </th>
-                    <th ><button className="btn btn-primary" onClick={this.addNewPlayer}>Add</button></th>
-
-                </tr>
-                    {player.map((player, index) => 
-                            <tr key={index}>
-                            <th><input type="text" name="pname" className="new-game-edit" onChange={(e) => this.handleOnChangeHole(player.pid, e)} /></th>
-                            {player.scores.map((score, index) => <td key={index} ><input type="text" name="score" className="new-game-edit" onChange={(e) => this.handleOnChangeScore(player, index, e)}/> </td>)}
-                            </tr>
-                    )}
-            </tbody>
-            );
-    }
-
-    populateNewGame() {
-        return (
-            <div>
-                <form>
-                    <label>
-                        Game Name:
-                        <input
-                            name="gameID"
-                            type="text"
-                            onChange={this.handleOnChangeGame} />
-                    </label>
-                    <label>
-                        Location:
-                        <input
-                            name="location"
-                            type="text"
-                            onChange={this.handleOnChangeGame} />
-                    </label>
-                    
-                </form>
-                <table className='table table-bordered' aria-labelledby="tabelLabel">
-                    {this.populateGameHead()}
-                    {this.populatePlayer()}
-                </table>
-                <button className="btn btn-primary" onClick={this.onSaveGame}>Save Game</button>
-            </div>
-        );
+        console.log('*****');
     }
 
     render() {
         let contents = this.state.newGame
-            ? this.populateNewGame()
+            ? <GameTable game={this.state.game} newGame={this.state.newGame} />
             : <p>Add new game here...<br/><button className="btn btn-primary" onClick={this.isNewGame}>New Game</button></p>;
         return (
             <div>
                 <h1 id="tableLabel" > New Game </h1>
                 
                 {contents}
+                <button className="btn btn-primary" onClick={this.onSaveGame}>Save Game</button>
             </div>
         );
     }
